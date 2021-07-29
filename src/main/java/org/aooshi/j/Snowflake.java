@@ -3,6 +3,8 @@ package org.aooshi.j;
 import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
+import java.util.Calendar;
+import java.util.TimeZone;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -112,6 +114,7 @@ public class Snowflake {
 
     /**
      * generate new id
+     *
      * @param twepoch
      * @return
      */
@@ -172,8 +175,20 @@ public class Snowflake {
         return this;
     }
 
+    /**
+     * set epoch
+     *
+     * @param year
+     */
+    public Snowflake epochYear(int year) {
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        // year -1 保持结果位18位
+        calendar.set(year, 1, 1, 0, 0, 0);
+        twepoch = calendar.getTime().getTime();
+        return this;
+    }
+
     protected long timeGen() {
         return System.currentTimeMillis();
     }
-
 }
